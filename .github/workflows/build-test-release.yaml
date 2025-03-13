@@ -46,8 +46,10 @@ jobs:
           arch: aarch64
           distro: ubuntu_latest
           run: |
-            apt-get update -q && DEBIAN_FRONTEND=noninteractive apt-get install -q -y build-essential golang-1.23-go git
-            export PATH=$PATH:/usr/lib/go-1.23/bin/
+            apt-get update -q && DEBIAN_FRONTEND=noninteractive apt-get install -q -y build-essential git
+            wget 'https://go.dev/dl/go1.24.1-arm64.tar.gz
+            tar -C /usr/local -xzf go1.24.1-arm64.tar.gz
+            export PATH=$PATH:/usr/local/go/bin
             go env
             make build-all RELEASE_BUILD=true
       - name: Run unit tests across all targets aarch64.
