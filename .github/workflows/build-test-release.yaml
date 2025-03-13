@@ -4,16 +4,16 @@ on:
     branches:
       - main
 jobs:
-  build-test-release:
+  build-test-release-x86_64:
     permissions:
       contents: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build all targets.
+      - name: Build all targets x86-64.
         run: |
           make build-all RELEASE_BUILD=true
-      - name: Run unit tests across all targets.
+      - name: Run unit tests across all targets x86-64.
         run: |
           make test-all
       - name: Prepare scenarios to be released.
@@ -28,5 +28,33 @@ jobs:
           automatic_release_tag: "latest"
           prerelease: true
           files: |
-            ./bin/ie
+            ./bin/ie-x86_64
             ./scenarios.zip
+
+  build-test-release-aarch64:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: uraimo/run-on-arch-action@v2
+        name: Build all target aarch64.
+        id: build
+        with:
+          arch: aarch64
+          distro: ubuntu_latest
+          run: |
+            apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential golang-1.23-go
+            PATH=$PATH:/usr/lib/go-1.23/bin make build-all RELEASE_BUILD=true
+      - name: Run unit tests across all targets aarch64.
+        run: |
+          make test-all
+      - name: Release Innovation Engine aarch64
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          title: "IE"
+          automatic_release_tag: "latest"
+          prerelease: true
+          files: |
+            ./bin/ie-aarch64
