@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - arm64-binaries
 jobs:
   build-test-release-x86_64:
     permissions:
