@@ -1,7 +1,6 @@
 name: build-test-release
 on:
   push:
-  push:
     tags:
       - v*
 jobs:
