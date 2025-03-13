@@ -33,6 +33,16 @@ jobs:
           name: ie-x86_64
           path: bin/ie
           retention-days: 5
+      - name: releases the artifacts
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          prerelease: true
+          files: |
+            bin/ie-x86_64
+            scenarios.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
 
   build-test-release-aarch64:
     permissions:
@@ -56,26 +66,13 @@ jobs:
       - name: Run unit tests across all targets aarch64.
         run: |
           make test-all
-      - name: Uploads binary file for aarch64
-        uses: actions/upload-artifact@v4
-        with:
-          name: ie-aarch64
-          path: bin/ie
-          retention-days: 5
-
-  release_artifacts:
-    name: release artifacts
-    runs-on: ubuntu-latest
-    needs: [build-test-release-x86_64, build-test-release-aarch64]
-    steps:
       - name: releases the artifacts
         uses: softprops/action-gh-release@v2
         with:
           tag_name: latest
           prerelease: true
           files: |
-            ie-x86_64
-            ie-aarch64
-            scenarios.zip
+            bin/ie-aarch64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+
