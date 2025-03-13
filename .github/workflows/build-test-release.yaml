@@ -21,6 +21,7 @@ jobs:
         run: |
           sudo apt install zip
           zip -r scenarios.zip scenarios
+          mv ./bin/ie ./bin/ie-x86_64
       - name: Release Innovation Engine
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
@@ -45,11 +46,14 @@ jobs:
           arch: aarch64
           distro: ubuntu_latest
           run: |
-            apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential golang-1.23-go
+            apt-get update -q && DEBIAN_FRONTEND=noninteractive apt-get install -q -y build-essential golang-1.23-go git
             PATH=$PATH:/usr/lib/go-1.23/bin make build-all RELEASE_BUILD=true
       - name: Run unit tests across all targets aarch64.
         run: |
           make test-all
+      - name: Prepare binary to be released.
+        run: |
+          mv ./bin/ie ./bin/ie-aarch64
       - name: Release Innovation Engine aarch64
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
