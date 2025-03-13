@@ -21,18 +21,7 @@ jobs:
         run: |
           sudo apt install zip
           zip -r scenarios.zip scenarios
-      - name: Uploads scenarios.zip
-        uses: actions/upload-artifact@v4
-        with:
-          name: scenarios.zip
-          path: scenarios.zip
-          retention-days: 5
-      - name: Uploads binary file for x86_64
-        uses: actions/upload-artifact@v4
-        with:
-          name: ie-x86_64
-          path: bin/ie
-          retention-days: 5
+          mv bin/ie bin/ie-x86_64
       - name: releases the artifacts
         uses: softprops/action-gh-release@v2
         with:
@@ -66,6 +55,9 @@ jobs:
       - name: Run unit tests across all targets aarch64.
         run: |
           make test-all
+      - name: Rename aarch64 binary for release.
+        run: |
+          sudo mv bin/ie bin/ie-aarch64
       - name: releases the artifacts
         uses: softprops/action-gh-release@v2
         with:
