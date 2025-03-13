@@ -69,7 +69,6 @@ jobs:
     needs: [build-test-release-x86_64, build-test-release-aarch64]
     steps:
       - name: releases the artifacts
-        if: startsWith(github.ref, 'refs/heads/release/')
         uses: softprops/action-gh-release@v2
         with:
           prerelease: true
