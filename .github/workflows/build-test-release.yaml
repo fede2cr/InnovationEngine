@@ -27,14 +27,12 @@ jobs:
           name: scenarios.zip
           path: scenarios.zip
           retention-days: 5
-          prerelease: true
       - name: Uploads binary file for x86_64
         uses: actions/upload-artifact@v4
         with:
           name: ie-x86_64
           path: bin/ie
           retention-days: 5
-          prerelease: true
 
   build-test-release-aarch64:
     permissions:
@@ -64,7 +62,6 @@ jobs:
           name: ie-aarch64
           path: bin/ie
           retention-days: 5
-          prerelease: true
 
   release_artifacts:
     name: release artifacts
@@ -75,6 +72,7 @@ jobs:
         if: startsWith(github.ref, 'refs/heads/release/')
         uses: softprops/action-gh-release@v2
         with:
+          prerelease: true
           files: |
             ie-x86_64
             ie-aarch64
