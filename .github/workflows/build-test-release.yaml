@@ -57,8 +57,7 @@ jobs:
           make test-all
       - name: Prepare binary to be released.
         run: |
-          ls -l ./ && ls -l ./bin/
-          mv ./bin/ie ./bin/ie-aarch64
+          sudo mv ./bin/ie ./bin/ie-aarch64
       - name: Release Innovation Engine aarch64
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
